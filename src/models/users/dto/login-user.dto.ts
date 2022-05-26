@@ -1,6 +1,6 @@
-import { InputType, Field, ObjectType } from '@nestjs/graphql';
-import { User } from './UserDTO';
-import { QuerySelector } from 'mongodb';
+import { InputType, Field, ObjectType } from "@nestjs/graphql";
+import { User } from "./user.dto";
+import { QuerySelector } from "mongodb";
 
 @InputType()
 export class LoginInput {

@@ -1,9 +1,22 @@
-import { Field, ID, InputType, ObjectType } from '@nestjs/graphql';
-import { Schema as MongooseSchema } from 'mongoose';
-import { BlogContentType } from './BlogEnum';
+import { Field, ID, InputType, ObjectType } from "@nestjs/graphql";
+import { Schema as MongooseSchema } from "mongoose";
 
-@ObjectType('BlogContent')
-@InputType('BlogContentInput')
+import { registerEnumType } from "@nestjs/graphql";
+
+export enum BlogContentType {
+  CODE,
+  EDITOR,
+  IMAGE,
+  IFRAME,
+}
+
+registerEnumType(BlogContentType, {
+  name: "BlogContentType",
+  description: "The BlogContentType.",
+});
+
+@ObjectType("BlogContent")
+@InputType("BlogContentInput")
 export class BlogContent {
   @Field()
   type: BlogContentType;

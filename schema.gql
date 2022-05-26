@@ -8,17 +8,6 @@ input AddUserSkillInput {
   tagId: String
 }
 
-type Blog {
-  content: [BlogContent!]!
-  createBy: String!
-  createdAt: String!
-  description: String!
-  id: ID!
-  slug: String!
-  title: String!
-  updatedAt: String!
-}
-
 type BlogContent {
   data: String!
   language: String!
@@ -29,85 +18,6 @@ input BlogContentInput {
   data: String!
   language: String!
   type: Float!
-}
-
-input CreateBlogInput {
-  contents: [BlogContentInput!]!
-  description: String!
-  tags: [String!]!
-  thumbnail: String!
-  title: String!
-}
-
-input CreateProjectInput {
-  description: String!
-  descriptionEN: String!
-  endTime: String!
-  name: String!
-  nameEN: String!
-  size: Int!
-  startTime: String!
-  status: ProjectStatus!
-  techs: [String!]!
-  workId: String!
-}
-
-input CreateSeoHomeInput {
-  description: String
-  descriptionEN: String
-  domain: String
-  facebookChatPlugin: String
-  image: SeoHomeImageInput!
-  reason: String
-  searchBoxUrl: String
-  siteName: String
-  social: SeoHomeSocialInput!
-  title: String
-  titleEN: String
-}
-
-input CreateTagInput {
-  description: String!
-  status: TagStatus!
-  thumbnail: String!
-  title: String!
-}
-
-input CreateUser {
-  age: Float!
-  avatar: String!
-  email: String!
-  firstName: String!
-  gender: Float!
-  items: [String!]!
-  lastName: String!
-  password: String!
-}
-
-input CreateWorkInput {
-  descriptionEN: String!
-  descriptionVN: String!
-  endTime: String!
-  nameEN: String!
-  nameVN: String!
-  position: String!
-  startTime: String!
-  status: WorkStatus!
-  thumbnail: String!
-  workType: WorkType!
-}
-
-input EntireTagInput {
-  limit: Int = null
-  status: [TagStatus!]!
-}
-
-input FindTagBySlugInput {
-  slug: String!
-}
-
-input FindUserInput {
-  credential: String!
 }
 
 """The gender of user"""
@@ -129,84 +39,9 @@ input HistoryFieldInput {
   oldValue: String
 }
 
-input LoginInput {
-  credential: String!
-  password: String!
-}
-
-type LoginOutput {
-  token: String!
-  user: User!
-}
-
-type Mutation {
-  blogCreate(input: CreateBlogInput!): Blog!
-  blogUpdate(input: UpdateBlogInput!): Blog!
-  projectCreate(input: CreateProjectInput!): Project!
-  projectUpdate(input: UpdateProjectInput!): Project!
-  seoHomeCreate(input: CreateSeoHomeInput!): SeoHome!
-  tagCreate(input: CreateTagInput!): Tag!
-  tagUpdate(input: UpdateTagInput!): Tag!
-  userAddSkill(input: AddUserSkillInput!): Boolean!
-  userCreate(input: CreateUser!): User!
-  userLogin(input: LoginInput!): LoginOutput!
-  userUpdateSkill(input: UpdateUserSkill!): Boolean!
-  workCreate(input: CreateWorkInput!): Work!
-  workUpdate(input: UpdateWorkInput!): Work!
-}
-
-type OutputSearchProject {
-  dataProjects: [Project!]!
-  total: Int!
-}
-
-type OutputSearchTag {
-  dataTags: [Tag!]!
-  total: Int!
-}
-
-type OutputSearchWork {
-  dataWorks: [Work!]!
-  total: Int!
-}
-
-type Project {
-  createBy: String
-  createdAt: String
-  description: String
-  descriptionEN: String
-  endTime: String
-  id: ID!
-  name: String
-  nameEN: String
-  size: Float
-  startTime: String
-  status: ProjectStatus
-  techs: [String!]!
-  techsData: [Tag!]!
-  updatedAt: String
-  userCreate: User
-  work: Work
-  workId: String
-}
-
-"""The ProjectStatus."""
-enum ProjectStatus {
-  ACTIVE
-  INACTIVE
-}
-
 type Query {
   initData: String!
   initDataTagDemo: String!
-  projectList(input: SearchProjectInput!): OutputSearchProject!
-  seoHome: SeoHome!
-  seoHomeEntire: [SeoHome!]!
-  tagEntire(input: EntireTagInput!): [Tag!]!
-  tagFindBySlug(input: FindTagBySlugInput!): Tag!
-  tagList(input: SearchTagInput!): OutputSearchTag!
-  userSkills(input: FindUserInput!): [UserSkillData!]!
-  workList(input: SearchWorkInput!): OutputSearchWork!
 }
 
 """The role of user"""
@@ -214,55 +49,6 @@ enum Role {
   ADMIN
   CREATOR
   USER
-}
-
-input SearchProjectInput {
-  key: String = null
-  limit: Int = null
-  offset: Int = null
-  orderBy: String = ""
-  sortBy: Int = null
-  status: [ProjectStatus!]!
-}
-
-input SearchTagInput {
-  count: Boolean = true
-  key: String = null
-  limit: Int = null
-  offset: Int = null
-  orderBy: String = ""
-  sortBy: Int = null
-  status: [TagStatus!]!
-}
-
-input SearchWorkInput {
-  count: Boolean = true
-  key: String = null
-  limit: Int = null
-  offset: Int = null
-  orderBy: String = ""
-  sortBy: Int = null
-  status: [WorkStatus!]!
-  type: [WorkType!]!
-}
-
-type SeoHome {
-  createBy: String!
-  createdAt: String!
-  description: String
-  descriptionEN: String
-  domain: String
-  facebookChatPlugin: String
-  history: [HistoryField!]!
-  id: ID!
-  image: SeoHomeImage!
-  reason: String
-  searchBoxUrl: String
-  siteName: String
-  social: SeoHomeSocial!
-  title: String
-  titleEN: String
-  userCreate: User
 }
 
 type SeoHomeImage {
@@ -325,30 +111,6 @@ enum TagType {
   SYSTEM
 }
 
-input UpdateBlogInput {
-  blogId: String!
-  data: CreateBlogInput!
-}
-
-input UpdateProjectInput {
-  data: CreateProjectInput!
-  projectId: String!
-}
-
-input UpdateTagInput {
-  data: CreateTagInput!
-  tagId: String!
-}
-
-input UpdateUserSkill {
-  data: [AddUserSkillInput!]!
-}
-
-input UpdateWorkInput {
-  data: CreateWorkInput!
-  workId: String!
-}
-
 type User {
   avatar: String
   createdAt: String
@@ -373,12 +135,6 @@ type UserSkill {
   tagId: String
 }
 
-type UserSkillData {
-  percent: Float
-  status: UserSkillStatus
-  tagData: Tag
-}
-
 """The skill status of user"""
 enum UserSkillStatus {
   ACTIVE
@@ -391,35 +147,4 @@ enum UserStatus {
   BLOCK
   INACTIVE
   PAUSE
-}
-
-type Work {
-  createBy: String
-  createdAt: String
-  descriptionEN: String
-  descriptionVN: String
-  endTime: String
-  id: ID!
-  nameEN: String
-  nameVN: String
-  position: String
-  startTime: String
-  status: WorkStatus
-  thumbnail: String
-  updatedAt: String
-  userCreate: User
-  workType: WorkType
-}
-
-"""The WorkStatus."""
-enum WorkStatus {
-  ACTIVE
-  INACTIVE
-}
-
-"""The WorkType."""
-enum WorkType {
-  CERTIFICATE
-  LEARN
-  WORK
 }

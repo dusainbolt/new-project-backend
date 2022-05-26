@@ -1,8 +1,7 @@
-import { SeoHomeImage, SeoHomeSocial } from './SeoHomeDTO';
-import { InputType, Field } from '@nestjs/graphql';
+import { SeoHomeImage, SeoHomeSocial } from "./seo-home.dto";
+import { InputType, Field } from "@nestjs/graphql";
 @InputType()
 export class CreateSeoHomeInput {
-
   @Field({ nullable: true })
   title: string;
 
@@ -35,5 +34,4 @@ export class CreateSeoHomeInput {
 
   @Field(() => SeoHomeImage)
   image: SeoHomeImage;
-
 }

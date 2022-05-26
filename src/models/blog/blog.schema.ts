@@ -1,7 +1,7 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Schema as MongooseSchema } from 'mongoose';
-import { USER_NAME } from '../users/user.schema';
-import { BlogContent } from '../../dto/blog/BlogDTO';
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Document, Schema as MongooseSchema } from "mongoose";
+import { USER_NAME } from "../users/user.schema";
+import { BlogContent } from "./dto/blog.dto";
 @Schema({ timestamps: true })
 export class BlogModel {
   @Prop({ unique: true, required: true })
@@ -20,7 +20,13 @@ export class BlogModel {
   seriesId: string;
 
   @Prop({
-    type: [{ type: { type: String }, data: { type: String }, language: { type: String } }],
+    type: [
+      {
+        type: { type: String },
+        data: { type: String },
+        language: { type: String },
+      },
+    ],
     required: true,
   })
   content: BlogContent[];
@@ -28,6 +34,6 @@ export class BlogModel {
 
 export type BlogDocument = BlogModel & Document;
 
-export const BLOG_NAME = 'Blog';
+export const BLOG_NAME = "Blog";
 
 export const BlogSchema = SchemaFactory.createForClass(BlogModel);

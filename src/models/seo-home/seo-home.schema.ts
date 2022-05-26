@@ -1,8 +1,7 @@
-import { SeoHomeSocial } from './../../dto/seoHome/SeoHomeDTO';
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Schema as MongooseSchema } from 'mongoose';
-import { HistoryField, SeoHomeImage } from 'src/dto/seoHome/SeoHomeDTO';
-import { USER_NAME } from '../users/user.schema';
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Document, Schema as MongooseSchema } from "mongoose";
+import { USER_NAME } from "../users/user.schema";
+import { HistoryField, SeoHomeImage, SeoHomeSocial } from "./dto/seo-home.dto";
 @Schema({ timestamps: { updatedAt: false } })
 export class SeoHomeModel {
   @Prop()
@@ -33,21 +32,41 @@ export class SeoHomeModel {
   reason: string;
 
   @Prop({
-    type: { facebookAppId: { type: String }, facebookPageUrl: { type: String }, youtubeUrl: { type: String }, twitterUrl: { type: String } },
-    default: {}
-  }) social: SeoHomeSocial;
-
+    type: {
+      facebookAppId: { type: String },
+      facebookPageUrl: { type: String },
+      youtubeUrl: { type: String },
+      twitterUrl: { type: String },
+    },
+    default: {},
+  })
+  social: SeoHomeSocial;
 
   @Prop({
-    type: { faviconUrlICO: { type: String }, faviconUrlJPG: { type: String }, logo400x400: { type: String }, logo800x600: { type: String }, logo1280x720: { type: String }, logoAlt: { type: String }, logoAltEN: { type: String } },
-    default: {}
-  }) image: SeoHomeImage;
-
+    type: {
+      faviconUrlICO: { type: String },
+      faviconUrlJPG: { type: String },
+      logo400x400: { type: String },
+      logo800x600: { type: String },
+      logo1280x720: { type: String },
+      logoAlt: { type: String },
+      logoAltEN: { type: String },
+    },
+    default: {},
+  })
+  image: SeoHomeImage;
 
   @Prop({
-    type: [{ key: { type: String }, newValue: { type: String }, oldValue: { type: String } }],
-    default: []
-  }) history: HistoryField[]
+    type: [
+      {
+        key: { type: String },
+        newValue: { type: String },
+        oldValue: { type: String },
+      },
+    ],
+    default: [],
+  })
+  history: HistoryField[];
 
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: USER_NAME, required: true })
   createBy: string;
@@ -55,6 +74,6 @@ export class SeoHomeModel {
 
 export type SeoHomeDocument = SeoHomeModel & Document;
 
-export const SEO_HOME_NAME = 'SeoHome';
+export const SEO_HOME_NAME = "SeoHome";
 
 export const SeoHomeSchema = SchemaFactory.createForClass(SeoHomeModel);

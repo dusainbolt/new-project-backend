@@ -1,21 +1,24 @@
-import { ConfigService } from '@nestjs/config';
-import { Injectable } from '@nestjs/common';
-import * as CryptoJS from 'crypto-js';
-import * as bcrypt from 'bcrypt';
-import * as jwt from 'jsonwebtoken';
+import { ConfigService } from "@nestjs/config";
+import { Injectable } from "@nestjs/common";
+import * as CryptoJS from "crypto-js";
+import * as bcrypt from "bcrypt";
+import * as jwt from "jsonwebtoken";
 @Injectable()
 export class HashService {
   private secret;
   constructor(private configService: ConfigService) {
-    this.secret = this.configService.get('JWT_SECRET');
+    this.secret = this.configService.get("JWT_SECRET");
   }
 
   hashCryptoAES(data: object | string): string {
-    return CryptoJS.AES.encrypt(JSON.stringify(data), this.configService.get('APP_KEY')).toString();
+    return CryptoJS.AES.encrypt(
+      JSON.stringify(data),
+      this.configService.get("APP_KEY")
+    ).toString();
   }
 
   unHashCryptoAES(hash: string): any {
-    const bytes = CryptoJS.AES.decrypt(hash, this.configService.get('APP_KEY'));
+    const bytes = CryptoJS.AES.decrypt(hash, this.configService.get("APP_KEY"));
     return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
   }
 

@@ -1,16 +1,19 @@
-import { ConfigService } from '@nestjs/config';
-import { HashService } from './../hash/hash.service';
-import { Logger } from '@nestjs/common';
-import { Plugin } from '@nestjs/graphql';
-import { ApolloServerPlugin, GraphQLRequestListener } from 'apollo-server-plugin-base';
-import { AuthenticationError } from 'apollo-server-errors';
-import { ERROR_CODE_HASH } from 'src/common/valid_message';
-import { LOCAL, NODE_ENV } from 'src/common/contant';
-import { UserHashToken } from 'src/dto/user/UserDTO';
+import { ConfigService } from "@nestjs/config";
+import { HashService } from "./../hash/hash.service";
+import { Logger } from "@nestjs/common";
+import { Plugin } from "@nestjs/graphql";
+import {
+  ApolloServerPlugin,
+  GraphQLRequestListener,
+} from "apollo-server-plugin-base";
+import { AuthenticationError } from "apollo-server-errors";
+import { ValidMessage } from "src/utils/valid_message";
+import { UserHashToken } from "src/models/users/dto/user.dto";
+import { Constant } from "src/utils/constant";
 
-export const DEC_START_REQUEST = 'START_AT:';
-export const DEC_GRAPHQL = 'ACTION:';
-export const DEC_END_REQUEST = 'END_BY:';
+export const DEC_START_REQUEST = "Start:";
+export const DEC_GRAPHQL = "Body:";
+export const DEC_END_REQUEST = "End:";
 
 export type location = {
   ip: string;
@@ -29,18 +32,16 @@ function getDurationRequest(request): Number {
   return new Date().getTime() - request.timeRequest;
 }
 
-//get info user request
-function getInfoUserRequest(user: UserHashToken): String {
-  return user && `${user.firstName} - ${user.lastName}`;
-}
-
 @Plugin()
 export class LoggingPlugin implements ApolloServerPlugin {
   private readonly logger = new Logger(LoggingPlugin.name);
-  constructor(private hashService: HashService, private configService: ConfigService) {}
+  constructor(
+    private hashService: HashService,
+    private configService: ConfigService
+  ) {}
   // get user ip with params headers
   getUserIpAddress(req): String {
-    const hashLocation = req.headers['x-forwarded-app'];
+    const hashLocation = req.headers["x-forwarded-app"];
     if (!hashLocation) return null;
     // encrypt hash geo data
     const location: location = this.hashService.unHashCryptoAES(hashLocation);
@@ -52,8 +53,12 @@ export class LoggingPlugin implements ApolloServerPlugin {
   validateHashServer(headers, timeServer): any {
     const { hash, timestamp } = headers;
     const durationTime = timeServer - timestamp;
-    if (hash !== this.hashService.hashMD5Crypto(this.configService.get('API_KEY')) || durationTime > 100) {
-      throw new AuthenticationError(ERROR_CODE_HASH);
+    if (
+      hash !==
+        this.hashService.hashMD5Crypto(this.configService.get("API_KEY")) ||
+      durationTime > 100
+    ) {
+      throw new AuthenticationError(ValidMessage.ERROR_CODE_HASH);
     }
   }
 
@@ -61,7 +66,10 @@ export class LoggingPlugin implements ApolloServerPlugin {
     const { req } = service.context;
 
     // Validate & log request if production
-    if (req.headers && this.configService.get(NODE_ENV) !== LOCAL) {
+    if (
+      req.headers &&
+      this.configService.get(Constant.env.NODE_ENV) !== Constant.env.LOCAL
+    ) {
       // get time server
       const timeServer = Math.floor(Date.now() / 1000);
       // handle validate
@@ -69,13 +77,13 @@ export class LoggingPlugin implements ApolloServerPlugin {
 
       // handle log info request
       // const ipAddress = this.getUserIpAddress(req);
-      this.logger.debug(`${DEC_START_REQUEST} ${timeServer}`);
+      // this.logger.debug(`${DEC_START_REQUEST} ${timeServer}`);
     }
 
     // Set time request
     service.timeRequest = new Date().getTime();
 
-    if (req.body.operationName === 'IntrospectionQuery') {
+    if (req.body.operationName === "IntrospectionQuery") {
       return;
     }
 
@@ -86,9 +94,12 @@ export class LoggingPlugin implements ApolloServerPlugin {
       willSendResponse(requestContext: any) {
         // handle log info when completed request
         const user: UserHashToken = requestContext.context.user;
-        new Logger().log(
-          `${DEC_END_REQUEST} ${getInfoUserRequest(user) || ''} ${getDurationRequest(requestContext)}ms`
-        );
+        const prefix = user ? `${user.email}` : "";
+        const messageResponse = `${DEC_END_REQUEST} ${prefix} ${getDurationRequest(
+          requestContext
+        )}ms`;
+
+        new Logger().log(messageResponse);
       },
     };
   }

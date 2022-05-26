@@ -1,7 +1,7 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Schema as MongooseSchema } from 'mongoose';
-import { TagStatus, TagType } from 'src/dto/tag/TagEnum';
-import { USER_NAME } from '../users/user.schema';
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Document, Schema as MongooseSchema } from "mongoose";
+import { USER_NAME } from "../users/user.schema";
+import { TagStatus, TagType } from "./dto/tag.dto";
 
 @Schema({ timestamps: true })
 export class TagModel {
@@ -20,7 +20,12 @@ export class TagModel {
   @Prop({ type: Number, enum: TagStatus, required: true })
   status: number;
 
-  @Prop({ type: Number, enum: TagType, required: true, default: TagType.SYSTEM })
+  @Prop({
+    type: Number,
+    enum: TagType,
+    required: true,
+    default: TagType.SYSTEM,
+  })
   tagType: number;
 
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: USER_NAME, required: true })
@@ -29,8 +34,8 @@ export class TagModel {
 
 export type TagDocument = TagModel & Document;
 
-export const TAG_NAME = 'Tag';
+export const TAG_NAME = "Tag";
 
-export const TAG_OTHER_NAME = 'tags';
+export const TAG_OTHER_NAME = "tags";
 
 export const TagSchema = SchemaFactory.createForClass(TagModel);

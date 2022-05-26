@@ -1,8 +1,9 @@
-import { Field, ObjectType, ID, InputType } from '@nestjs/graphql';
-import { Schema as MongooseSchema } from 'mongoose';
-import { User } from 'src/dto/user/UserDTO';
+import { Field, ObjectType, ID, InputType } from "@nestjs/graphql";
+import { Schema as MongooseSchema } from "mongoose";
+import { User } from "src/models/users/dto/user.dto";
+
 @ObjectType()
-@InputType('HistoryFieldInput')
+@InputType("HistoryFieldInput")
 export class HistoryField {
   @Field({ nullable: true })
   key: string;
@@ -15,7 +16,7 @@ export class HistoryField {
 }
 
 @ObjectType()
-@InputType('SeoHomeImageInput')
+@InputType("SeoHomeImageInput")
 export class SeoHomeImage {
   @Field({ nullable: true })
   faviconUrlICO: string;
@@ -40,7 +41,7 @@ export class SeoHomeImage {
 }
 
 @ObjectType()
-@InputType('SeoHomeSocialInput')
+@InputType("SeoHomeSocialInput")
 export class SeoHomeSocial {
   @Field({ nullable: true })
   facebookAppId?: string;

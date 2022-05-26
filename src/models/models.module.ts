@@ -1,16 +1,14 @@
-import { UsersModule } from './users/user.module';
-import { Module } from '@nestjs/common';
-import { ModelResolver } from './models.resolver';
-import { BlogModule } from 'src/models/blog/blog.module';
-import { SeoHomeModule } from './seo-home/seo-home.module';
-import { WorkModule } from './work/work.module';
-import { TagModule } from './tag/tag.module';
-import { HashService } from 'src/hash/hash.service';
-import { ProjectModule } from './project/project.module';
+import { UsersModule } from "./users/user.module";
+import { Module } from "@nestjs/common";
+import { ModelResolver } from "./models.resolver";
+import { BlogModule } from "src/models/blog/blog.module";
+import { SeoHomeModule } from "./seo-home/seo-home.module";
+import { TagModule } from "./tag/tag.module";
+import { HashService } from "src/hash/hash.service";
 
-export const EVENT_INIT_DATA_BY_USER = 'EVENT_INIT_DATA_BY_USER';
+export const EVENT_INIT_DATA_BY_USER = "EVENT_INIT_DATA_BY_USER";
 @Module({
-  imports: [UsersModule, SeoHomeModule, BlogModule, TagModule, WorkModule, ProjectModule],
+  imports: [UsersModule, SeoHomeModule, BlogModule, TagModule],
   providers: [ModelResolver, HashService],
 })
-export class ModelsModule { }
+export class ModelsModule {}

@@ -1,5 +1,5 @@
-import { Field, InputType, Int } from '@nestjs/graphql';
-import { TagStatus } from './TagEnum';
+import { Field, InputType, Int } from "@nestjs/graphql";
+import { TagStatus } from "./tag.dto";
 
 @InputType()
 export class EntireTagInput {

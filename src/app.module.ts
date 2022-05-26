@@ -1,22 +1,21 @@
-import { WorkModule } from './models/work/work.module';
-import { WorkService } from './models/work/work.service';
-import { TagService } from './models/tag/tag.service';
-import { TagModule } from './models/tag/tag.module';
-import { UsersModule } from './models/users/user.module';
-import { PluginModule } from './plugins/plugin.module';
-import { AuthModule } from './auth/auth.module';
-import { EventEmitterModule } from '@nestjs/event-emitter';
-import { Module } from '@nestjs/common';
-import { GraphQLModule } from '@nestjs/graphql';
-import { MongooseModule } from '@nestjs/mongoose';
-import { ModelsModule } from './models/models.module';
-import { ScheduleModule } from '@nestjs/schedule';
-import { LogsModule } from './logs/logs.module';
-import { ConfigModule } from '@nestjs/config';
-import { environment } from './environment';
-import { HashModule } from './hash/hash.module';
-import { UserService } from './models/users/user.service';
-import { loaderService } from './models/loader.service';
+import { Module } from "@nestjs/common";
+import { ConfigModule } from "@nestjs/config";
+import { EventEmitterModule } from "@nestjs/event-emitter";
+import { GraphQLModule } from "@nestjs/graphql";
+import { MongooseModule } from "@nestjs/mongoose";
+import { ScheduleModule } from "@nestjs/schedule";
+import { AuthModule } from "./auth/auth.module";
+import { environment } from "./environment";
+import { HashModule } from "./hash/hash.module";
+import { HttpModule } from "./http.module";
+import { LogsModule } from "./logs/logs.module";
+import { loaderService } from "./models/loader.service";
+import { ModelsModule } from "./models/models.module";
+import { TagModule } from "./models/tag/tag.module";
+import { TagService } from "./models/tag/tag.service";
+import { UsersModule } from "./models/users/user.module";
+import { UserService } from "./models/users/user.service";
+import { PluginModule } from "./plugins/plugin.module";
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -33,32 +32,32 @@ import { loaderService } from './models/loader.service';
     PluginModule,
     ModelsModule,
     GraphQLModule.forRootAsync({
-      imports: [UsersModule, TagModule, WorkModule],
-      useFactory: (userService: UserService, tagService: TagService, workService: WorkService) => ({
-        playground: process.env.NODE_ENV !== 'production',
+      imports: [UsersModule, TagModule],
+      useFactory: (userService: UserService, tagService: TagService) => ({
+        playground: process.env.NODE_ENV !== "production",
         installSubscriptionHandlers: true,
         sortSchema: true,
-        fieldResolverEnhancers: ['guards'],
-        autoSchemaFile: 'schema.gql',
+        fieldResolverEnhancers: ["guards"],
+        autoSchemaFile: "schema.gql",
         cors: {
-          origin: '*',
+          origin: "*",
           credentials: true,
-          methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+          methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
           preflightContinue: true,
           optionsSuccessStatus: 204,
         },
         context: () => ({
           usersLoader: loaderService.userLoader(userService),
           tagsLoader: loaderService.tagLoader(tagService),
-          worksLoader: loaderService.workLoader(workService),
         }),
       }),
-      inject: [UserService, TagService, WorkService],
+      inject: [UserService, TagService],
     }),
     // TasksModule,
     LogsModule,
     AuthModule,
     HashModule,
+    HttpModule,
   ],
 })
 export class AppModule {}

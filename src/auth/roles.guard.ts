@@ -1,12 +1,17 @@
-import { AuthService } from './auth.service';
-import { GqlExecutionContext } from '@nestjs/graphql';
-import { Injectable, CanActivate, ExecutionContext, SetMetadata } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
-import { Role } from 'src/dto/user/UserEnum';
+import { AuthService } from "./auth.service";
+import { GqlExecutionContext } from "@nestjs/graphql";
+import {
+  Injectable,
+  CanActivate,
+  ExecutionContext,
+  SetMetadata,
+} from "@nestjs/common";
+import { Reflector } from "@nestjs/core";
+import { Role } from "src/models/users/dto/user.dto";
 
-export const ROLES_KEY = 'roles';
+export const ROLES_KEY = "roles";
 export const Roles = (roles: Role[]) => SetMetadata(ROLES_KEY, roles);
-export const USER_KEY = 'user';
+export const USER_KEY = "user";
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(private reflector: Reflector, private authService: AuthService) {}
@@ -34,6 +39,6 @@ export class RolesGuard implements CanActivate {
       return true;
     }
 
-    return requiredRoles.some(role => ctx[USER_KEY].roles?.includes(role));
+    return requiredRoles.some((role) => ctx[USER_KEY].roles?.includes(role));
   }
 }

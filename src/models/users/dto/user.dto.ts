@@ -1,8 +1,53 @@
-import { lengthMessage } from '../../common/valid_message';
-import { IsEmail, Length } from 'class-validator';
-import { Field, ObjectType, ID, InputType } from '@nestjs/graphql';
-import { Gender, Role, UserStatus } from './UserEnum';
-import { UserSkill } from './SkillUserDTO';
+import { ValidMessage } from "../../../utils/valid_message";
+import { IsEmail, Length } from "class-validator";
+import { Field, ObjectType, ID, InputType } from "@nestjs/graphql";
+import { UserSkill } from "./skill-user.dto";
+
+import { registerEnumType } from "@nestjs/graphql";
+
+export enum Role {
+  USER,
+  ADMIN,
+  CREATOR,
+}
+
+registerEnumType(Role, {
+  name: "Role",
+  description: "The role of user",
+});
+
+export enum UserStatus {
+  ACTIVE,
+  INACTIVE,
+  PAUSE,
+  BLOCK,
+}
+
+registerEnumType(UserStatus, {
+  name: "UserStatus",
+  description: "The status of user",
+});
+
+export enum UserSkillStatus {
+  ACTIVE,
+  INACTIVE,
+}
+
+registerEnumType(UserSkillStatus, {
+  name: "UserSkillStatus",
+  description: "The skill status of user",
+});
+
+export enum Gender {
+  MALE,
+  FEMALE,
+  OTHER,
+}
+
+registerEnumType(Gender, {
+  name: "Gender",
+  description: "The gender of user",
+});
 
 @ObjectType()
 export class User {
@@ -60,10 +105,10 @@ export class InitUser {
   @Field()
   username: string;
 
-  @Length(1, 25, { message: lengthMessage })
+  @Length(1, 25, { message: ValidMessage.lengthMessage })
   firstName: string;
 
-  @Length(1, 25, { message: lengthMessage })
+  @Length(1, 25, { message: ValidMessage.lengthMessage })
   lastName: string;
 
   @Field()

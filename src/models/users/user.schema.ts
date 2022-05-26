@@ -1,7 +1,7 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Schema as MongooseSchema } from 'mongoose';
-import { UserSkill } from 'src/dto/user/SkillUserDTO';
-import { Gender, Role, UserStatus, UserSkillStatus } from '../../dto/user/UserEnum';
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Document, Schema as MongooseSchema } from "mongoose";
+import { UserSkill } from "src/models/users/dto/skill-user.dto";
+import { Gender, Role, UserStatus, UserSkillStatus } from "./dto/user.dto";
 
 @Schema({ timestamps: true })
 export class UserModel {
@@ -36,7 +36,7 @@ export class UserModel {
     {
       tagId: {
         type: MongooseSchema.Types.ObjectId,
-        ref: 'tags',
+        ref: "tags",
       },
       percent: { type: Number },
       status: { type: Number, enum: UserSkillStatus },
@@ -53,6 +53,6 @@ export class UserModel {
 
 export type UserDocument = UserModel & Document;
 
-export const USER_NAME = 'User';
+export const USER_NAME = "User";
 
 export const UserSchema = SchemaFactory.createForClass(UserModel);

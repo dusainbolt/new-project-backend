@@ -1,6 +1,6 @@
-import { CachingModule } from './../caching/caching.module';
-import { Module } from '@nestjs/common';
-import { ItemTask } from './items.task';
+import { CachingModule } from "./../caching/caching.module";
+import { Module } from "@nestjs/common";
+import { ItemTask } from "./items.task";
 
 @Module({
   imports: [CachingModule],

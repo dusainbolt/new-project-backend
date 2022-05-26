@@ -1,8 +1,7 @@
-import { Schema as MongooseSchema } from 'mongoose';
-import { Length, IsEmail, IsOptional, isEmpty, IsEmpty } from 'class-validator';
-import { InputType, Field } from '@nestjs/graphql';
-import { lengthMessage } from 'src/common/valid_message';
-
+import { Field, InputType } from "@nestjs/graphql";
+import { IsEmail, IsEmpty, Length } from "class-validator";
+import { Schema as MongooseSchema } from "mongoose";
+import { ValidMessage } from "src/utils/valid_message";
 @InputType()
 export class CreateUser {
   @Field()
@@ -10,11 +9,11 @@ export class CreateUser {
   email: string;
 
   @Field()
-  @Length(1, 25, { message: lengthMessage })
+  @Length(1, 25, { message: ValidMessage.lengthMessage })
   firstName: string;
 
   @Field()
-  @Length(1, 25, { message: lengthMessage })
+  @Length(1, 25, { message: ValidMessage.lengthMessage })
   lastName: string;
 
   @IsEmpty()

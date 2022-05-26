@@ -1,8 +1,7 @@
-import { InputType, Field, Int, ObjectType } from '@nestjs/graphql';
-import { TagStatus } from './TagEnum';
-import { Condition } from 'mongodb';
-import { Tag } from './TagDTO';
-import { FilterQuery } from 'mongoose';
+import { InputType, Field, Int, ObjectType } from "@nestjs/graphql";
+import { Condition } from "mongodb";
+import { Tag, TagStatus } from "./tag.dto";
+import { FilterQuery } from "mongoose";
 
 @InputType()
 export class SearchTagInput {
@@ -21,7 +20,7 @@ export class SearchTagInput {
   @Field(() => Int, { defaultValue: null })
   sortBy?: number;
 
-  @Field({ defaultValue: '' })
+  @Field({ defaultValue: "" })
   orderBy?: string;
 
   @Field({ defaultValue: true })

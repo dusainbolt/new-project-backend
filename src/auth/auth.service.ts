@@ -1,11 +1,13 @@
-import { UserService } from '../models/users/user.service';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { HashService } from 'src/hash/hash.service';
-import { User, UserHashToken } from 'src/dto/user/UserDTO';
-
+import { UserService } from "../models/users/user.service";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { HashService } from "src/hash/hash.service";
+import { User, UserHashToken } from "src/models/users/dto/user.dto";
 @Injectable()
 export class AuthService {
-  constructor(private userService: UserService, private hashService: HashService) {}
+  constructor(
+    private userService: UserService,
+    private hashService: HashService
+  ) {}
 
   async validateUser(id: string): Promise<any> {
     return await this.userService.userModel.findById(id);
@@ -13,10 +15,10 @@ export class AuthService {
   }
 
   async validateToken(auth: string) {
-    if (auth?.split(' ')[0] !== 'Bearer') {
+    if (auth?.split(" ")[0] !== "Bearer") {
       throw new UnauthorizedException();
     }
-    const token = auth.split(' ')[1];
+    const token = auth.split(" ")[1];
     try {
       const userHashToken = this.hashService.verifyJWT(token) as UserHashToken;
       const user: User = await this.validateUser(userHashToken.id);

@@ -1,9 +1,9 @@
-import { Tag } from 'src/dto/tag/TagDTO';
-import { InputType, Field, ObjectType } from '@nestjs/graphql';
-import { UserSkillStatus } from './UserEnum';
+import { InputType, Field, ObjectType } from "@nestjs/graphql";
+import { Tag } from "src/models/tag/dto/tag.dto";
+import { UserSkillStatus } from "./user.dto";
 
 @ObjectType()
-@InputType('AddUserSkillInput')
+@InputType("AddUserSkillInput")
 export class UserSkill {
   @Field({ nullable: true })
   tagId: string;

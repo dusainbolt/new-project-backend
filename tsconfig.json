@@ -13,5 +13,8 @@
     "incremental": true,
     "skipLibCheck": true
   },
-  "include": ["src/**/*", "e2e/items.resolver.spec.ts"]
+  "include": [
+    "src/**/*",
+    "e2e/items.resolver.spec.ts"
+  ]
 }
