@@ -1,3 +1,4 @@
+import { UseGuards } from "@nestjs/common";
 import { Args, Mutation, Resolver } from "@nestjs/graphql";
 import { AuthenticationError } from "apollo-server";
 import { ValidMessage } from "src/utils/valid_message";
@@ -5,6 +6,7 @@ import { User } from "./entity/user.entity";
 import { CreateUserInput } from "./graph/create-user.graph";
 import { LoginInput, LoginOutput } from "./graph/login-user.graph";
 import { UserService } from "./user.service";
+import { AuthGuard } from "@nestjs/passport";
 @Resolver(User)
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
@@ -13,7 +15,7 @@ export class UserResolver {
   async createUser(@Args("input") input: CreateUserInput): Promise<User> {
     return await this.userService.create(input);
   }
-
+  // @UseGuards(AuthGuard("facebook-token"))
   @Mutation(() => LoginOutput)
   async loginUser(@Args("input") input: LoginInput): Promise<LoginOutput> {
     // Check is exist user

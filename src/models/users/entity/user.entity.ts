@@ -46,7 +46,7 @@ export class User {
   updatedAt?: string;
 }
 
-export class UserHashToken {
+export type UserHashToken = {
   id: string;
 
   username: string;
@@ -54,4 +54,4 @@ export class UserHashToken {
   email: string;
 
   roles: Role[];
-}
+};

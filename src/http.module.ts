@@ -39,7 +39,7 @@ export class HttpModule implements OnModuleInit {
           `${config.method.toUpperCase()} ${config.url} ${duration}ms`
         );
 
-        return response;
+        return response.data;
       },
       (err) => {
         logger.error(err);

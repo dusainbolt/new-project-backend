@@ -31,6 +31,9 @@ export class UserModel {
   @Prop()
   facebook: string;
 
+  @Prop()
+  provider: string;
+
   // @Prop([
   //   {
   //     tagId: {

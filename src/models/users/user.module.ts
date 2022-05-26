@@ -1,10 +1,10 @@
-import { AppLogger } from "./../../logs/logs.service";
-import { MongooseModule } from "@nestjs/mongoose";
 import { Module } from "@nestjs/common";
-import { UserService } from "./user.service";
+import { MongooseModule } from "@nestjs/mongoose";
+import { HashService } from "src/hash/hash.service";
+import { AppLogger } from "./../../logs/logs.service";
 import { UserResolver } from "./user.resolver";
 import { UserSchema, USER_NAME } from "./user.schema";
-import { HashService } from "src/hash/hash.service";
+import { UserService } from "./user.service";
 
 @Module({
   imports: [

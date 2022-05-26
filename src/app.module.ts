@@ -54,10 +54,10 @@ import { PluginModule } from "./plugins/plugin.module";
       inject: [UserService, TagService],
     }),
     // TasksModule,
+    HttpModule,
     LogsModule,
     AuthModule,
     HashModule,
-    HttpModule,
   ],
 })
 export class AppModule {}
