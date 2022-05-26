@@ -1,34 +1,16 @@
-import { Field, InputType } from "@nestjs/graphql";
-import { IsEmail, IsEmpty, Length } from "class-validator";
-import { Schema as MongooseSchema } from "mongoose";
-import { ValidMessage } from "src/utils/valid_message";
-@InputType()
-export class CreateUser {
-  @Field()
-  @IsEmail()
-  email: string;
+import { Gender } from "../entity/user.enum";
+export class CreateUserDTO {
+  email?: string;
 
-  @Field()
-  @Length(1, 25, { message: ValidMessage.lengthMessage })
-  firstName: string;
+  firstName?: string;
 
-  @Field()
-  @Length(1, 25, { message: ValidMessage.lengthMessage })
-  lastName: string;
+  lastName?: string;
 
-  @IsEmpty()
-  @Field()
-  avatar: string;
+  avatar?: string;
 
-  @Field()
-  password: string;
+  password?: string;
 
-  @Field()
-  age: number;
+  age?: number;
 
-  @Field()
-  gender: number;
-
-  @Field(() => [String])
-  items: string[] | MongooseSchema.Types.ObjectId[];
+  gender?: Gender;
 }

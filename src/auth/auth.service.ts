@@ -1,7 +1,7 @@
 import { UserService } from "../models/users/user.service";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { HashService } from "src/hash/hash.service";
-import { User, UserHashToken } from "src/models/users/dto/user.dto";
+import { User, UserHashToken } from "src/models/users/entity/user.entity";
 @Injectable()
 export class AuthService {
   constructor(

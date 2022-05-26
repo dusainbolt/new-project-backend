@@ -1,6 +1,6 @@
 import { Field, ID, ObjectType } from "@nestjs/graphql";
 import { registerEnumType } from "@nestjs/graphql";
-import { User } from "src/models/users/dto/user.dto";
+// import { User } from "src/models/users/dto/user.dto";
 
 export enum TagStatus {
   HIDE,
@@ -54,6 +54,6 @@ export class Tag {
   @Field()
   updatedAt?: string;
 
-  @Field()
-  userCreate?: User;
+  // @Field()
+  // userCreate?: User;
 }

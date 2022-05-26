@@ -1,32 +1,39 @@
 import { Injectable } from "@nestjs/common";
-import { OnEvent } from "@nestjs/event-emitter";
 import { InjectModel } from "@nestjs/mongoose";
-import { AuthenticationError } from "apollo-server-errors";
-import { GraphQLError } from "graphql";
-import { Model } from "mongoose";
-import { UserSkill } from "src/models/users/dto/skill-user.dto";
-import { HashService } from "src/hash/hash.service";
-import { helperService } from "src/utils/helper";
-import { ValidMessage } from "src/utils/valid_message";
-import { CreateUser } from "./dto/create-user.dto";
-import { LoginInput, LoginOutput, QueryFindUser } from "./dto/login-user.dto";
-import { User } from "./dto/user.dto";
-import { UserSkillStatus } from "./dto/user.dto";
-import { Constant } from "../../utils/constant";
-import { UserSkillData } from "./dto/skill-user.dto";
-import { FindUserInput } from "./dto/user.dto";
-import { AppLogger } from "./../../logs/logs.service";
-import { TAG_NAME } from "./../tag/tag.schema";
+import { FilterQuery, Model } from "mongoose";
+import { CreateUserDTO } from "./dto/create-user.dto";
+import { User } from "./entity/user.entity";
 import { UserDocument, USER_NAME } from "./user.schema";
 @Injectable()
 export class UserService {
   constructor(
-    @InjectModel(USER_NAME) public userModel: Model<UserDocument>,
-    private hashService: HashService,
-    private appLogger: AppLogger
+    @InjectModel(USER_NAME) public userModel: Model<UserDocument> // private hashService: HashService, // private appLogger: AppLogger
   ) {
-    this.appLogger.setContext(UserService.name);
+    // this.appLogger.setContext(UserService.name);
   }
+
+  async create(createUserDTO: CreateUserDTO): Promise<User> {
+    return this.userModel.create(createUserDTO);
+  }
+
+  // updateOne(id: number, updateLoginDto: UpdateLoginDto) {
+  //   return `This action updates a #${id} login`;
+  // }
+
+  async findById(id: string): Promise<User> {
+    return this.userModel.findById(id);
+  }
+
+  async findOne(filter: FilterQuery<any>): Promise<User> {
+    return this.userModel.findOne(filter);
+  }
+  // findAll(): Promise<Array<CreatePersonResponseDto>> {
+  //   // return this.peopleRepository.find();
+  // }
+
+  // async remove(id: number) {
+  //   // await this.peopleRepository.delete(id);
+  // }
 
   // // Create token for user
   // createToken({ id, email, firstName, lastName, roles }: User) {

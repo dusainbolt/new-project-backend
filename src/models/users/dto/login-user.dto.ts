@@ -1,5 +1,5 @@
 import { InputType, Field, ObjectType } from "@nestjs/graphql";
-import { User } from "./user.dto";
+import { User } from "../entity/user.entity";
 import { QuerySelector } from "mongodb";
 
 @InputType()
@@ -9,15 +9,6 @@ export class LoginInput {
 
   @Field()
   password: string;
-}
-
-@ObjectType()
-export class LoginOutput {
-  @Field(() => User)
-  user: User;
-
-  @Field()
-  token: string;
 }
 
 @ObjectType()

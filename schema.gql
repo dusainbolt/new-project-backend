@@ -2,12 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-input AddUserSkillInput {
-  percent: Float
-  status: UserSkillStatus
-  tagId: String
-}
-
 type BlogContent {
   data: String!
   language: String!
@@ -18,6 +12,17 @@ input BlogContentInput {
   data: String!
   language: String!
   type: Float!
+}
+
+input CreateUserInput {
+  age: Float!
+  avatar: String!
+  email: String!
+  firstName: String!
+  gender: Float!
+  lastName: String!
+  password: String!
+  username: String!
 }
 
 """The gender of user"""
@@ -37,6 +42,21 @@ input HistoryFieldInput {
   key: String
   newValue: String
   oldValue: String
+}
+
+input LoginInput {
+  credential: String!
+  password: String!
+}
+
+type LoginOutput {
+  token: String!
+  user: User!
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!): User!
+  loginUser(input: LoginInput!): LoginOutput!
 }
 
 type Query {
@@ -96,7 +116,6 @@ type Tag {
   thumbnail: String!
   title: String!
   updatedAt: String!
-  userCreate: User!
 }
 
 """The TagStatus."""
@@ -118,27 +137,14 @@ type User {
   facebook: String
   firstName: String
   gender: Gender!
-  id: ID!
+  id: ID
   lastName: String
   password: String
   phone: String
   roles: [Role!]!
-  skills: [UserSkill!]!
   status: UserStatus!
   updatedAt: String
   username: String
-}
-
-type UserSkill {
-  percent: Float
-  status: UserSkillStatus
-  tagId: String
-}
-
-"""The skill status of user"""
-enum UserSkillStatus {
-  ACTIVE
-  INACTIVE
 }
 
 """The status of user"""

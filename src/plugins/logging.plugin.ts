@@ -8,8 +8,8 @@ import {
 } from "apollo-server-plugin-base";
 import { AuthenticationError } from "apollo-server-errors";
 import { ValidMessage } from "src/utils/valid_message";
-import { UserHashToken } from "src/models/users/dto/user.dto";
 import { Constant } from "src/utils/constant";
+import { UserHashToken } from "src/models/users/entity/user.entity";
 
 export const DEC_START_REQUEST = "Start:";
 export const DEC_GRAPHQL = "Body:";
@@ -35,10 +35,14 @@ function getDurationRequest(request): Number {
 @Plugin()
 export class LoggingPlugin implements ApolloServerPlugin {
   private readonly logger = new Logger(LoggingPlugin.name);
+  private isLocal: boolean = true;
   constructor(
     private hashService: HashService,
     private configService: ConfigService
-  ) {}
+  ) {
+    this.isLocal =
+      configService.get(Constant.env.NODE_ENV) === Constant.env.LOCAL;
+  }
   // get user ip with params headers
   getUserIpAddress(req): String {
     const hashLocation = req.headers["x-forwarded-app"];
@@ -66,10 +70,7 @@ export class LoggingPlugin implements ApolloServerPlugin {
     const { req } = service.context;
 
     // Validate & log request if production
-    if (
-      req.headers &&
-      this.configService.get(Constant.env.NODE_ENV) !== Constant.env.LOCAL
-    ) {
+    if (req.headers && !this.isLocal) {
       // get time server
       const timeServer = Math.floor(Date.now() / 1000);
       // handle validate
@@ -78,29 +79,29 @@ export class LoggingPlugin implements ApolloServerPlugin {
       // handle log info request
       // const ipAddress = this.getUserIpAddress(req);
       // this.logger.debug(`${DEC_START_REQUEST} ${timeServer}`);
+
+      // Set time request
+      service.timeRequest = new Date().getTime();
+
+      if (req.body.operationName === "IntrospectionQuery") {
+        return;
+      }
+
+      this.logger.debug(`${DEC_GRAPHQL} ${req.body.query}`);
+      this.logger.verbose(JSON.stringify(req.body.variables));
+
+      return {
+        willSendResponse(requestContext: any) {
+          // handle log info when completed request
+          const user: UserHashToken = requestContext.context.user;
+          const prefix = user ? `${user.email}` : "";
+          const messageResponse = `${DEC_END_REQUEST} ${prefix} ${getDurationRequest(
+            requestContext
+          )}ms`;
+
+          new Logger().log(messageResponse);
+        },
+      };
     }
-
-    // Set time request
-    service.timeRequest = new Date().getTime();
-
-    if (req.body.operationName === "IntrospectionQuery") {
-      return;
-    }
-
-    this.logger.debug(`${DEC_GRAPHQL} ${req.body.query}`);
-    this.logger.verbose(JSON.stringify(req.body.variables));
-
-    return {
-      willSendResponse(requestContext: any) {
-        // handle log info when completed request
-        const user: UserHashToken = requestContext.context.user;
-        const prefix = user ? `${user.email}` : "";
-        const messageResponse = `${DEC_END_REQUEST} ${prefix} ${getDurationRequest(
-          requestContext
-        )}ms`;
-
-        new Logger().log(messageResponse);
-      },
-    };
   }
 }

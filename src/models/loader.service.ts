@@ -1,9 +1,9 @@
 import { TagService } from "./tag/tag.service";
 import * as DataLoader from "dataloader";
 import { helperService } from "src/utils/helper";
-import { User } from "src/models/users/dto/user.dto";
 import { UserService } from "./users/user.service";
 import { Tag } from "./tag/dto/tag.dto";
+import { User } from "./users/entity/user.entity";
 
 class LoaderService {
   responseLoader(models, ids: string[]) {
