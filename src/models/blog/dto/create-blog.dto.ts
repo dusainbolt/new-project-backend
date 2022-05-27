@@ -1,11 +1,11 @@
 import { InputType, Field } from "@nestjs/graphql";
 import { Length } from "class-validator";
-import { ValidMessage } from "src/utils/valid_message";
+import { MSG } from "src/utils/message";
 import { BlogContent } from "./blog.dto";
 
 @InputType()
 export class CreateBlogInput {
-  @Length(10, 256, { message: ValidMessage.lengthMessage })
+  @Length(10, 256, { message: MSG.validLength })
   @Field()
   title: string;
 

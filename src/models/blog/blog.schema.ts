@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document, Schema as MongooseSchema } from "mongoose";
-import { USER_NAME } from "../users/user.schema";
+import { Constant } from "src/utils/constant";
 import { BlogContent } from "./dto/blog.dto";
 @Schema({ timestamps: true })
 export class BlogModel {
@@ -13,10 +13,10 @@ export class BlogModel {
   @Prop({ unique: true, required: true })
   description: string;
 
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: USER_NAME })
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: Constant.schema.USER })
   createBy: string;
 
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: USER_NAME })
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: Constant.schema.USER })
   seriesId: string;
 
   @Prop({

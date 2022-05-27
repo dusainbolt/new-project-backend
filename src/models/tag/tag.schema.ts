@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document, Schema as MongooseSchema } from "mongoose";
-import { USER_NAME } from "../users/user.schema";
+import { Constant } from "src/utils/constant";
 import { TagStatus, TagType } from "./dto/tag.dto";
 
 @Schema({ timestamps: true })
@@ -28,7 +28,11 @@ export class TagModel {
   })
   tagType: number;
 
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: USER_NAME, required: true })
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: Constant.schema.USER,
+    required: true,
+  })
   createBy: string;
 }
 

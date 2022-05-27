@@ -1,6 +1,7 @@
 import { Controller, Get, Req, UseGuards } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { UserAuthFacebook } from "src/models/users/entity/user-auth-facebook";
+import { Helper } from "src/utils/helper";
 
 @Controller("auth")
 export class AuthController {
@@ -8,6 +9,6 @@ export class AuthController {
   @Get("facebook")
   async getTokenAfterFacebookSignIn(@Req() req) {
     const user: UserAuthFacebook = req.user;
-    console.log("user: ", req.user);
+    return Helper.apiOk(user);
   }
 }

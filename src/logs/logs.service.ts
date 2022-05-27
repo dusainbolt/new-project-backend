@@ -11,11 +11,7 @@ export class AppLogger extends Logger {
   // list key in message will handle ignore
   private ignoreData: Array<string> = ["initialized"];
   // list key in message will handle break line
-  private breakLineData: Array<string> = [
-    DEC_START_REQUEST,
-    DEC_GRAPHQL,
-    DEC_END_REQUEST,
-  ];
+  private breakLineData: Array<string> = [DEC_END_REQUEST];
   // root folder save log
   private dirName: string = "src/logs/data";
 
@@ -62,7 +58,7 @@ export class AppLogger extends Logger {
 
       // check break line
       if (this.ignoreLog(message, this.breakLineData)) {
-        message = `\n${message}`;
+        message = `${message}\n`;
       }
 
       appendFile(fileName, message, (error) => {

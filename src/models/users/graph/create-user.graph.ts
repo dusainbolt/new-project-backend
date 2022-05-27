@@ -1,6 +1,6 @@
 import { Field, InputType } from "@nestjs/graphql";
 import { IsEmail, Length } from "class-validator";
-import { ValidMessage } from "src/utils/valid_message";
+import { MSG } from "src/utils/message";
 
 @InputType()
 export class CreateUserInput {
@@ -9,15 +9,15 @@ export class CreateUserInput {
   email: string;
 
   @Field()
-  @Length(1, 18, { message: ValidMessage.lengthMessage })
+  @Length(1, 18, { message: MSG.validLength })
   username: string;
 
   @Field()
-  @Length(1, 25, { message: ValidMessage.lengthMessage })
+  @Length(1, 25, { message: MSG.validLength })
   firstName: string;
 
   @Field()
-  @Length(1, 25, { message: ValidMessage.lengthMessage })
+  @Length(1, 25, { message: MSG.validLength })
   lastName: string;
 
   //   @IsEmpty()

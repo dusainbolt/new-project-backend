@@ -55,6 +55,4 @@ export class UserModel {
 
 export type UserDocument = UserModel & Document;
 
-export const USER_NAME = "User";
-
 export const UserSchema = SchemaFactory.createForClass(UserModel);

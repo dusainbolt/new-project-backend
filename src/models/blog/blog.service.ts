@@ -2,9 +2,6 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { BlogDocument, BLOG_NAME } from "./blog.schema";
-import { Blog } from "./dto/blog.dto";
-import { helperService } from "src/utils/helper";
-import { CreateBlogInput, UpdateBlogInput } from "./dto/create-blog.dto";
 @Injectable()
 export class BlogService {
   constructor(@InjectModel(BLOG_NAME) public blogModel: Model<BlogDocument>) {}

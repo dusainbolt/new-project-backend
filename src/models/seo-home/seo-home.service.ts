@@ -25,7 +25,7 @@ export class SeoHomeService {
   //     createSeoHomeInput
   //   );
   //   if (!history.length) {
-  //     throw new GraphQLError(ValidMessage.msg.UPDATE_NOT_DIFF);
+  //     throw new GraphQLError(MSG.msg.UPDATE_NOT_DIFF);
   //   }
   //   // Create Tag
   //   const seoHome = new this.seoHomeModel({

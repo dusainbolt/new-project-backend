@@ -7,9 +7,10 @@ import {
   GraphQLRequestListener,
 } from "apollo-server-plugin-base";
 import { AuthenticationError } from "apollo-server-errors";
-import { ValidMessage } from "src/utils/valid_message";
+import { MSG } from "src/utils/message";
 import { Constant } from "src/utils/constant";
 import { UserHashToken } from "src/models/users/entity/user.entity";
+import { Helper } from "src/utils/helper";
 
 export const DEC_START_REQUEST = "Start:";
 export const DEC_GRAPHQL = "Body:";
@@ -62,7 +63,7 @@ export class LoggingPlugin implements ApolloServerPlugin {
         this.hashService.hashMD5Crypto(this.configService.get("API_KEY")) ||
       durationTime > 100
     ) {
-      throw new AuthenticationError(ValidMessage.ERROR_CODE_HASH);
+      throw Helper.apolloError(MSG.system.INVALID_API_KEY);
     }
   }
 
@@ -87,7 +88,7 @@ export class LoggingPlugin implements ApolloServerPlugin {
         return;
       }
 
-      this.logger.debug(`${DEC_GRAPHQL} ${req.body.query}`);
+      this.logger.debug(`${DEC_GRAPHQL} ${req.body.operationName}`);
       this.logger.verbose(JSON.stringify(req.body.variables));
 
       return {

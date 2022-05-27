@@ -1,16 +1,13 @@
 import { TagService } from "./tag/tag.service";
 import * as DataLoader from "dataloader";
-import { helperService } from "src/utils/helper";
 import { UserService } from "./users/user.service";
 import { Tag } from "./tag/dto/tag.dto";
 import { User } from "./users/entity/user.entity";
+import { Helper } from "src/utils/helper";
 
 class LoaderService {
   responseLoader(models, ids: string[]) {
-    const modelsMap = helperService.mapFromArray(
-      models,
-      (model: any) => model.id
-    );
+    const modelsMap = Helper.mapFromArray(models, (model: any) => model.id);
     return ids.map((id) => modelsMap[id]);
   }
   userLoader(userService: UserService) {

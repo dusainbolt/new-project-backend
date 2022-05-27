@@ -1,13 +1,14 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { FilterQuery, Model } from "mongoose";
+import { Constant } from "src/utils/constant";
 import { CreateUserDTO } from "./dto/create-user.dto";
 import { User } from "./entity/user.entity";
-import { UserDocument, USER_NAME } from "./user.schema";
+import { UserDocument } from "./user.schema";
 @Injectable()
 export class UserService {
   constructor(
-    @InjectModel(USER_NAME) public userModel: Model<UserDocument> // private hashService: HashService, // private appLogger: AppLogger
+    @InjectModel(Constant.schema.USER) public userModel: Model<UserDocument> // private hashService: HashService, // private appLogger: AppLogger
   ) {
     // this.appLogger.setContext(UserService.name);
   }
@@ -50,7 +51,7 @@ export class UserService {
   //   // Check is exist user
   //   let user = await this.findOne(loginInput.credential);
   //   if (!user) {
-  //     throw new AuthenticationError(ValidMessage.msg.MSG_LOGIN_ERROR);
+  //     throw new AuthenticationError(MSG.msg.MSG_LOGIN_ERROR);
   //   }
   //   // Check password
   //   const isMatchPassword = await this.hashService.matchBcrypt(
@@ -61,7 +62,7 @@ export class UserService {
   //   if (isMatchPassword) {
   //     return { user, token: this.createToken(user) };
   //   } else {
-  //     throw new AuthenticationError(ValidMessage.msg.MSG_LOGIN_ERROR);
+  //     throw new AuthenticationError(MSG.msg.MSG_LOGIN_ERROR);
   //   }
   // }
 
@@ -108,7 +109,7 @@ export class UserService {
   //       "tagId"
   //     );
   //     if (!arrSkill.length) {
-  //       throw new GraphQLError(ValidMessage.msg.ADD_SKILL_NOT_DIFF);
+  //       throw new GraphQLError(MSG.msg.ADD_SKILL_NOT_DIFF);
   //     }
   //   }
   //   // Add skill id  and save

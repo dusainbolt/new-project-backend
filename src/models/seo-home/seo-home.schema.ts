@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document, Schema as MongooseSchema } from "mongoose";
-import { USER_NAME } from "../users/user.schema";
+import { Constant } from "src/utils/constant";
 import { HistoryField, SeoHomeImage, SeoHomeSocial } from "./dto/seo-home.dto";
 @Schema({ timestamps: { updatedAt: false } })
 export class SeoHomeModel {
@@ -68,7 +68,11 @@ export class SeoHomeModel {
   })
   history: HistoryField[];
 
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: USER_NAME, required: true })
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: Constant.schema.USER,
+    required: true,
+  })
   createBy: string;
 }
 
