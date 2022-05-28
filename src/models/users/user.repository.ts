@@ -1,39 +1,53 @@
 import { Injectable } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { FilterQuery, Model } from "mongoose";
+import { Constant } from "src/utils/constant";
+import { User } from "./entity/user.entity";
+import { UserDocument } from "./entity/user.schema";
 
 @Injectable()
-export class UserService {
-  // constructor(
-  //   @InjectModel(Constant.schema.USER) public userModel: Model<UserDocument> // private hashService: HashService, // private appLogger: AppLogger
-  // ) {
-  //   // this.appLogger.setContext(UserService.name);
+export class UserRepository {
+  constructor(
+    @InjectModel(Constant.schema.USER) public userModel: Model<UserDocument> // private hashService: HashService, // private appLogger: AppLogger
+  ) {
+    // this.appLogger.setContext(UserService.name);
+  }
+
+  async create(userInfo: User): Promise<UserDocument> {
+    return this.userModel.create(userInfo);
+  }
+
+  // updateOne(id: number, updateLoginDto: UpdateLoginDto) {
+  //   return `This action updates a #${id} login`;
   // }
-  // async create(userInfo: User): Promise<UserDocument> {
-  //   return this.userModel.create(userInfo);
-  // }
-  // // updateOne(id: number, updateLoginDto: UpdateLoginDto) {
-  // //   return `This action updates a #${id} login`;
-  // // }
-  // async findById(id: string): Promise<User> {
-  //   return this.userModel.findById(id);
-  // }
-  // async findOne(filter: FilterQuery<any>): Promise<UserDocument> {
-  //   return this.userModel.findOne(filter);
-  // }
-  // async findAll(): Promise<UserDocument[]> {
-  //   return this.userModel.find();
-  // }
+
+  async findById(id: string): Promise<User> {
+    return this.userModel.findById(id);
+  }
+
+  async findOne(filter: FilterQuery<any> = {}): Promise<UserDocument> {
+    return this.userModel.findOne(filter);
+  }
+
+  async findAll(filter: FilterQuery<any> = {}): Promise<UserDocument[]> {
+    return this.userModel.find(filter);
+  }
+
   // async remove(id: number) {
   //   // await this.peopleRepository.delete(id);
   // }
+
   // // Create token for user
   // createToken({ id, email, firstName, lastName, roles }: User) {
   //   return this.hashService.signJWT({ id, email, firstName, lastName, roles });
   // }
+
   // async create(createUser: CreateUser): Promise<User> {
   //   const createdUser = new this.userModel(createUser);
   //   const data = await createdUser.save();
   //   return data;
   // }
+
   // async login(loginInput: LoginInput): Promise<LoginOutput> {
   //   // Check is exist user
   //   let user = await this.findOne(loginInput.credential);
@@ -52,9 +66,11 @@ export class UserService {
   //     throw new AuthenticationError(MSG.msg.MSG_LOGIN_ERROR);
   //   }
   // }
+
   // async findByIds(ids: string[]): Promise<User[]> {
   //   return this.userModel.find({ _id: { $in: ids } });
   // }
+
   // async findOne(credential: string): Promise<User> {
   //   const query: QueryFindUser = { username: {}, email: {} };
   //   // Find by email
@@ -66,6 +82,7 @@ export class UserService {
   //     $or: [{ username: query.username }, { email: query.email }],
   //   });
   // }
+
   // async listSkill({ credential }: FindUserInput): Promise<UserSkillData[]> {
   //   const user = (await this.findOne(credential)) as UserDocument;
   //   // const data = user.populate({ path: 'skills.tagId' });
@@ -79,6 +96,7 @@ export class UserService {
   //     tagData: item.tagId,
   //   }));
   // }
+
   // async addSkill(
   //   skills: UserSkill[],
   //   user: UserDocument,
@@ -101,12 +119,14 @@ export class UserService {
   //   // Return a skill user
   //   return true;
   // }
+
   // async updateSkill(skills: UserSkill[], user: UserDocument): Promise<Boolean> {
   //   user.skills = skills;
   //   await user.save();
   //   // Check skill id duplicate
   //   return true;
   // }
+
   // //   Update user skills by project techs
   // @OnEvent(Constant.event.CHANGE_USER_SKILL)
   // async changeSkillByProject({

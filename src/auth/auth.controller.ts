@@ -9,8 +9,8 @@ import {
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { OAuth2Google } from "src/models/users/dto/oauth2-google.dto";
-import { UserSocial } from "src/models/users/dto/user-social.dto";
 import { VerifySocial } from "src/models/users/dto/verify-social.dto";
+import { UserSocial } from "src/models/users/entity/user-social.entity";
 import { SocialType } from "src/models/users/entity/user.enum";
 import { Constant } from "src/utils/constant";
 import { Helper } from "src/utils/helper";

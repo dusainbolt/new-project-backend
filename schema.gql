@@ -2,18 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type BlogContent {
-  data: String!
-  language: String!
-  type: Float!
-}
-
-input BlogContentInput {
-  data: String!
-  language: String!
-  type: Float!
-}
-
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -24,18 +12,6 @@ enum Gender {
   FEMALE
   MALE
   OTHER
-}
-
-type HistoryField {
-  key: String
-  newValue: String
-  oldValue: String
-}
-
-input HistoryFieldInput {
-  key: String
-  newValue: String
-  oldValue: String
 }
 
 type JWT {
@@ -64,40 +40,6 @@ input SearchUserInput {
   offset: Int = null
   orderBy: String = ""
   sortBy: Int = null
-}
-
-type SeoHomeImage {
-  faviconUrlICO: String
-  faviconUrlJPG: String
-  logo400x400: String
-  logo800x600: String
-  logo1280x720: String
-  logoAlt: String
-  logoAltEN: String
-}
-
-input SeoHomeImageInput {
-  faviconUrlICO: String
-  faviconUrlJPG: String
-  logo400x400: String
-  logo800x600: String
-  logo1280x720: String
-  logoAlt: String
-  logoAltEN: String
-}
-
-type SeoHomeSocial {
-  facebookAppId: String
-  facebookPageUrl: String
-  twitterUrl: String
-  youtubeUrl: String
-}
-
-input SeoHomeSocialInput {
-  facebookAppId: String
-  facebookPageUrl: String
-  twitterUrl: String
-  youtubeUrl: String
 }
 
 """The SocialType of authentication user"""

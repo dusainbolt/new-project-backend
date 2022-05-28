@@ -2,21 +2,21 @@ import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { HashService } from "src/hash/hash.service";
 import { JWTData } from "src/models/users/dto/jwt-data.dto";
-import { JWT } from "src/models/users/dto/jwt.dto";
-import { UserSocial } from "src/models/users/dto/user-social.dto";
 import { VerifySocial } from "src/models/users/dto/verify-social.dto";
+import { JWT } from "src/models/users/entity/jwt.entity";
+import { UserSocial } from "src/models/users/entity/user-social.entity";
 import { User } from "src/models/users/entity/user.entity";
 import { Role } from "src/models/users/entity/user.enum";
+import { UserRepository } from "src/models/users/user.repository";
 import { Constant } from "src/utils/constant";
 import { DateHelper } from "src/utils/date";
 import { Helper } from "src/utils/helper";
 import { MSG } from "src/utils/message";
-import { UserService } from "../models/users/user.service";
 
 @Injectable()
 export class AuthService {
   constructor(
-    private userService: UserService,
+    private userRepository: UserRepository,
     private hashService: HashService,
     private configService: ConfigService
   ) {}
@@ -28,7 +28,7 @@ export class AuthService {
     const token = auth.split(" ")[1];
     try {
       const JWTData = this.hashService.verifyJWT(token) as JWTData;
-      const user: User = await this.userService.findById(JWTData.id);
+      const user: User = await this.userRepository.findById(JWTData.id);
       if (!!!user.id) {
         throw Helper.apolloError(MSG.system.INVALID_TOKEN);
       }
@@ -40,7 +40,7 @@ export class AuthService {
 
   async loginWithSocial(userSocial: UserSocial): Promise<VerifySocial> {
     // find user
-    let user = await this.userService.findOne({
+    let user = await this.userRepository.findOne({
       email: userSocial.email,
       socialId: userSocial.socialId,
     });
@@ -51,7 +51,7 @@ export class AuthService {
         username: Helper.randUserName(),
         roles: [Role.USER],
       };
-      user = await this.userService.create(createUserData);
+      user = await this.userRepository.create(createUserData);
     }
 
     // sign jwt

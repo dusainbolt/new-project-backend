@@ -4,7 +4,7 @@ import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
 import * as FacebookTokenStrategy from "passport-facebook-token";
 import { OAuth2Facebook } from "src/models/users/dto/oauth2-facebook.dto";
-import { UserSocial } from "src/models/users/dto/user-social.dto";
+import { UserSocial } from "src/models/users/entity/user-social.entity";
 import { SocialType } from "src/models/users/entity/user.enum";
 import { Constant } from "src/utils/constant";
 @Injectable()

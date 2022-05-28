@@ -11,10 +11,8 @@ import { HttpModule } from "./http.module";
 import { LogsModule } from "./logs/logs.module";
 import { loaderService } from "./models/loader.service";
 import { ModelsModule } from "./models/models.module";
-import { TagModule } from "./models/tag/tag.module";
-import { TagService } from "./models/tag/tag.service";
 import { UsersModule } from "./models/users/user.module";
-import { UserService } from "./models/users/user.service";
+import { UserRepository } from "./models/users/user.repository";
 import { PluginModule } from "./plugins/plugin.module";
 @Module({
   imports: [
@@ -32,8 +30,8 @@ import { PluginModule } from "./plugins/plugin.module";
     PluginModule,
     ModelsModule,
     GraphQLModule.forRootAsync({
-      imports: [UsersModule, TagModule],
-      useFactory: (userService: UserService, tagService: TagService) => ({
+      imports: [UsersModule],
+      useFactory: (userRepository: UserRepository) => ({
         playground: process.env.NODE_ENV !== "production",
         installSubscriptionHandlers: true,
         sortSchema: true,
@@ -47,11 +45,11 @@ import { PluginModule } from "./plugins/plugin.module";
           optionsSuccessStatus: 204,
         },
         context: () => ({
-          usersLoader: loaderService.userLoader(userService),
-          tagsLoader: loaderService.tagLoader(tagService),
+          usersLoader: loaderService.userLoader(userRepository),
+          // tagsLoader: loaderService.tagLoader(tagService),
         }),
       }),
-      inject: [UserService, TagService],
+      inject: [UserRepository],
     }),
     // TasksModule,
     HttpModule,

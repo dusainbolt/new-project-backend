@@ -1,5 +1,5 @@
 import { Field, ID, ObjectType } from "@nestjs/graphql";
-import { JWT } from "../dto/jwt.dto";
+import { JWT } from "./jwt.entity";
 import { Gender, Role, SocialType, UserStatus } from "./user.enum";
 
 @ObjectType()

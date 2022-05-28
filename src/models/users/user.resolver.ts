@@ -1,14 +1,14 @@
 import { Args, Query, Resolver } from "@nestjs/graphql";
 import { User } from "./entity/user.entity";
 import { SearchUserInput } from "./graph/search-user.graph";
-import { UserService } from "./user.service";
+import { UserRepository } from "./user.repository";
 @Resolver(User)
 export class UserResolver {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
   @Query(() => [User])
   async searchUser(@Args("input") input: SearchUserInput): Promise<User[]> {
-    return await this.userService.findAll();
+    return await this.userRepository.findAll();
     // return this.userService.listSkill(input);
   }
 
