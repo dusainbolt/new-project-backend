@@ -17,9 +17,9 @@ export class UserRepository {
     return this.userModel.create(userInfo);
   }
 
-  // updateOne(id: number, updateLoginDto: UpdateLoginDto) {
-  //   return `This action updates a #${id} login`;
-  // }
+  updateById(id: number, userInfo: User) {
+    return this.userModel.findByIdAndUpdate(id, userInfo);
+  }
 
   async findById(id: string): Promise<User> {
     return this.userModel.findById(id);

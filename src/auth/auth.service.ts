@@ -29,7 +29,7 @@ export class AuthService {
     try {
       const JWTData = this.hashService.verifyJWT(token) as JWTData;
       const user: User = await this.userRepository.findById(JWTData.id);
-      if (!!!user.id) {
+      if (!!!user._id) {
         throw Helper.apolloError(MSG.system.INVALID_TOKEN);
       }
       return user;

@@ -1,11 +1,11 @@
-import { Field, ID, ObjectType } from "@nestjs/graphql";
+import { Field, ObjectType } from "@nestjs/graphql";
 import { JWT } from "./jwt.entity";
 import { Gender, Role, SocialType, UserStatus } from "./user.enum";
 
 @ObjectType()
 export class User {
-  @Field(() => ID)
-  id?: string;
+  @Field()
+  _id?: string;
 
   @Field({ nullable: true })
   email?: string;

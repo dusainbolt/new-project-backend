@@ -1,7 +1,9 @@
 import {
   Controller,
   Get,
+  HttpException,
   HttpService,
+  HttpStatus,
   Logger,
   Param,
   Req,
@@ -14,7 +16,6 @@ import { UserSocial } from "src/models/users/entity/user-social.entity";
 import { SocialType } from "src/models/users/entity/user.enum";
 import { Constant } from "src/utils/constant";
 import { Helper } from "src/utils/helper";
-import { MSG } from "src/utils/message";
 import { AuthService } from "./auth.service";
 
 @Controller("auth")
@@ -61,7 +62,8 @@ export class AuthController {
       return Helper.apiOk(response);
     } catch (e) {
       this._logger.log("google/:idToken ", e);
-      return Helper.apiError(MSG.logic.INVALID_USER);
+      throw new HttpException("Post not found", HttpStatus.UNAUTHORIZED);
+      // return Helper.apiError(MSG.logic.INVALID_USER);
     }
   }
 }

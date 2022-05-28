@@ -23,10 +23,10 @@ export class UserModel {
   @Prop()
   phone: string;
 
-  @Prop({ type: Number, enum: SocialType, required: true })
+  @Prop({ type: Number, enum: SocialType })
   socialType: SocialType;
 
-  @Prop({ required: true })
+  @Prop()
   socialId: string;
 
   @Prop({ type: Number, enum: Gender, default: Gender.FEMALE })

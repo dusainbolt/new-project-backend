@@ -20,6 +20,10 @@ type JWT {
   value: String
 }
 
+type Mutation {
+  updateUser(input: UpdateUserInput!): Boolean!
+}
+
 type Query {
   initData: String!
   initDataTagDemo: String!
@@ -48,14 +52,18 @@ enum SocialType {
   GOOGLE
 }
 
+input UpdateUserInput {
+  username: String!
+}
+
 type User {
+  _id: String
   avatar: String
   birthday: DateTime
   createdAt: DateTime
   email: String
   firstName: String
   gender: Gender
-  id: ID
   lastName: String
   phone: String
   roles: [Role!]
