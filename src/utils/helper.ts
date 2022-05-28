@@ -15,6 +15,13 @@ export class Helper {
   };
 
   static apiOk = (data: any) => ({ code: 200, message: "success", data });
+
+  static apiError = (message: MsgResponse, data: any = null) => ({
+    ...message,
+    data,
+  });
+
+  static randUserName = () => `username_${Date.now()}`;
 }
 // export class HelperService {
 //   removeBreakLine = (string: String): String => {

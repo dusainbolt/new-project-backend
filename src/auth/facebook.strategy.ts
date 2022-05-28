@@ -1,80 +1,40 @@
-import { Injectable } from "@nestjs/common";
-import * as FacebookTokenStrategy from "passport-facebook-token";
 // import { use } from "passport";
-import { HttpService } from "@nestjs/axios";
-import { UserAuthFacebook } from "src/models/users/entity/user-auth-facebook";
+import { Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
+import * as FacebookTokenStrategy from "passport-facebook-token";
+import { OAuth2Facebook } from "src/models/users/dto/oauth2-facebook.dto";
+import { UserSocial } from "src/models/users/dto/user-social.dto";
+import { SocialType } from "src/models/users/entity/user.enum";
+import { Constant } from "src/utils/constant";
 @Injectable()
 export class FacebookStrategy extends PassportStrategy(
   FacebookTokenStrategy,
-  "facebook-token"
+  Constant.imports.FACEBOOK_STRATEGY
 ) {
-  constructor(private readonly http: HttpService) {
+  constructor(private readonly configService: ConfigService) {
     super(
       {
-        clientID: "337403978525891",
-        clientSecret: "ebe8a5ff563e418b2bc5922690821ba4",
+        clientID: configService.get(Constant.env.FACEBOOk_APP_ID),
+        clientSecret: configService.get(Constant.env.FACEBOOk_APP_SECRET),
       },
       async (
         accessToken: string,
         refreshToken: string,
-        profile: any,
+        profile: OAuth2Facebook,
         done: any
       ) => {
-        const { data } = await this.http
-          .get(
-            `https://graph.facebook.com/me/picture?type=large&access_token=${accessToken}&redirect=false`
-          )
-          .toPromise();
-
-        const user: UserAuthFacebook = {
-          id: profile.id,
+        const userSocial: UserSocial = {
+          socialId: profile.id,
+          firstName: profile.name.givenName,
+          lastName: profile.name.familyName,
           email: profile.emails[0].value,
-          displayName: profile.displayName,
-          token: accessToken,
-          avatar: data.url,
+          name: profile.displayName,
+          avatar: profile.url,
+          socialType: SocialType.FACEBOOK,
         };
-
-        return done(null, user);
+        return done(null, userSocial);
       }
     );
   }
 }
-
-// export class FacebookStrategy {
-//   constructor(private readonly http: HttpService) {
-//     this.init();
-//   }
-//   init() {
-//     use(
-//       new FacebookTokenStrategy(
-//         {
-//           clientID: "337403978525891",
-//           clientSecret: "ebe8a5ff563e418b2bc5922690821ba4",
-//         },
-//         async (
-//           accessToken: string,
-//           refreshToken: string,
-//           profile: any,
-//           done: any
-//         ) => {
-//           const { data } = await this.http
-//             .get(
-//               `https://graph.facebook.com/me/picture?type=large&access_token=${accessToken}&redirect=false`
-//             )
-//             .toPromise();
-
-//           const user: UserAuthFacebook = {
-//             id: profile.id,
-//             email: profile.emails[0].value,
-//             displayName: profile.displayName,
-//             token: accessToken,
-//             avatar: data.url,
-//           };
-
-//           return done(null, user);
-//         }
-//       )
-//     );
-//   }
-// }

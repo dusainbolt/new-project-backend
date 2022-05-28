@@ -14,16 +14,10 @@ input BlogContentInput {
   type: Float!
 }
 
-input CreateUserInput {
-  age: Float!
-  avatar: String!
-  email: String!
-  firstName: String!
-  gender: Float!
-  lastName: String!
-  password: String!
-  username: String!
-}
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 """The gender of user"""
 enum Gender {
@@ -44,24 +38,16 @@ input HistoryFieldInput {
   oldValue: String
 }
 
-input LoginInput {
-  credential: String!
-  password: String!
-}
-
-type LoginOutput {
-  token: String!
-  user: User!
-}
-
-type Mutation {
-  createUser(input: CreateUserInput!): User!
-  loginUser(input: LoginInput!): LoginOutput!
+type JWT {
+  createdAt: DateTime
+  exp: DateTime
+  value: String
 }
 
 type Query {
   initData: String!
   initDataTagDemo: String!
+  searchUser(input: SearchUserInput!): [User!]!
 }
 
 """The role of user"""
@@ -69,6 +55,15 @@ enum Role {
   ADMIN
   CREATOR
   USER
+}
+
+input SearchUserInput {
+  count: Boolean = true
+  key: String = null
+  limit: Int = null
+  offset: Int = null
+  orderBy: String = ""
+  sortBy: Int = null
 }
 
 type SeoHomeImage {
@@ -105,45 +100,28 @@ input SeoHomeSocialInput {
   youtubeUrl: String
 }
 
-type Tag {
-  createBy: String!
-  createdAt: String!
-  description: String!
-  id: ID!
-  slug: String!
-  status: TagStatus!
-  tagType: TagType!
-  thumbnail: String!
-  title: String!
-  updatedAt: String!
-}
-
-"""The TagStatus."""
-enum TagStatus {
-  ACTIVE
-  HIDE
-}
-
-"""The TagType."""
-enum TagType {
-  ADDITION
-  SYSTEM
+"""The SocialType of authentication user"""
+enum SocialType {
+  FACEBOOK
+  GOOGLE
 }
 
 type User {
   avatar: String
-  createdAt: String
+  birthday: DateTime
+  createdAt: DateTime
   email: String
-  facebook: String
   firstName: String
-  gender: Gender!
+  gender: Gender
   id: ID
   lastName: String
-  password: String
   phone: String
-  roles: [Role!]!
-  status: UserStatus!
-  updatedAt: String
+  roles: [Role!]
+  socialId: String
+  socialType: SocialType
+  status: UserStatus
+  tokens: [JWT!]
+  updatedAt: DateTime
   username: String
 }
 

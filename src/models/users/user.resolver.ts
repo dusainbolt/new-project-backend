@@ -1,30 +1,32 @@
-import { Args, Mutation, Resolver } from "@nestjs/graphql";
-import { Helper } from "src/utils/helper";
-import { MSG } from "src/utils/message";
+import { Args, Query, Resolver } from "@nestjs/graphql";
 import { User } from "./entity/user.entity";
-import { CreateUserInput } from "./graph/create-user.graph";
-import { LoginInput, LoginOutput } from "./graph/login-user.graph";
+import { SearchUserInput } from "./graph/search-user.graph";
 import { UserService } from "./user.service";
 @Resolver(User)
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
-  @Mutation(() => User)
-  async createUser(@Args("input") input: CreateUserInput): Promise<User> {
-    return await this.userService.create(input);
+  @Query(() => [User])
+  async searchUser(@Args("input") input: SearchUserInput): Promise<User[]> {
+    return await this.userService.findAll();
+    // return this.userService.listSkill(input);
   }
-  @Mutation(() => LoginOutput)
-  async loginUser(@Args("input") input: LoginInput): Promise<LoginOutput> {
-    // Check is exist user
-    console.log("input: ", input);
-    let user = await this.userService.findOne({
-      $or: [{ username: input.credential }, { email: input.credential }],
-    });
-    if (!user) {
-      throw Helper.apolloError(MSG.logic.INVALID_USER);
-    }
-    return { user, token: "EXAMPLE" };
-  }
+
+  // @Mutation(() => User)
+  // async createUser(@Args("input") input: CreateUserInput): Promise<User> {
+  //   return await this.userService.create(input);
+  // }
+  // @Mutation(() => LoginOutput)
+  // async loginUser(@Args("input") input: LoginInput): Promise<LoginOutput> {
+  //   // Check is exist user
+  //   let user = await this.userService.findOne({
+  //     $or: [{ username: input.credential }, { email: input.credential }],
+  //   });
+  //   if (!user) {
+  //     throw Helper.apolloError(MSG.logic.INVALID_USER);
+  //   }
+  //   return { user, token: "EXAMPLE" };
+  // }
 
   // @Query(() => [UserSkillData])
   // async userSkills(

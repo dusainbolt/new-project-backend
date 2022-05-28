@@ -33,3 +33,13 @@ registerEnumType(Gender, {
   name: "Gender",
   description: "The gender of user",
 });
+
+export enum SocialType {
+  FACEBOOK,
+  GOOGLE,
+}
+
+registerEnumType(SocialType, {
+  name: "SocialType",
+  description: "The SocialType of authentication user",
+});

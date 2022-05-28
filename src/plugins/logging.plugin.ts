@@ -1,16 +1,15 @@
-import { ConfigService } from "@nestjs/config";
-import { HashService } from "./../hash/hash.service";
 import { Logger } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { Plugin } from "@nestjs/graphql";
 import {
   ApolloServerPlugin,
   GraphQLRequestListener,
 } from "apollo-server-plugin-base";
-import { AuthenticationError } from "apollo-server-errors";
-import { MSG } from "src/utils/message";
+import { JWTData } from "src/models/users/dto/jwt-data.dto";
 import { Constant } from "src/utils/constant";
-import { UserHashToken } from "src/models/users/entity/user.entity";
 import { Helper } from "src/utils/helper";
+import { MSG } from "src/utils/message";
+import { HashService } from "./../hash/hash.service";
 
 export const DEC_START_REQUEST = "Start:";
 export const DEC_GRAPHQL = "Body:";
@@ -94,7 +93,7 @@ export class LoggingPlugin implements ApolloServerPlugin {
       return {
         willSendResponse(requestContext: any) {
           // handle log info when completed request
-          const user: UserHashToken = requestContext.context.user;
+          const user: JWTData = requestContext.context.user;
           const prefix = user ? `${user.email}` : "";
           const messageResponse = `${DEC_END_REQUEST} ${prefix} ${getDurationRequest(
             requestContext

@@ -2,9 +2,9 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { FilterQuery, Model } from "mongoose";
 import { Constant } from "src/utils/constant";
-import { CreateUserDTO } from "./dto/create-user.dto";
 import { User } from "./entity/user.entity";
 import { UserDocument } from "./user.schema";
+
 @Injectable()
 export class UserService {
   constructor(
@@ -13,8 +13,8 @@ export class UserService {
     // this.appLogger.setContext(UserService.name);
   }
 
-  async create(createUserDTO: CreateUserDTO): Promise<User> {
-    return this.userModel.create(createUserDTO);
+  async create(userInfo: User): Promise<UserDocument> {
+    return this.userModel.create(userInfo);
   }
 
   // updateOne(id: number, updateLoginDto: UpdateLoginDto) {
@@ -25,12 +25,13 @@ export class UserService {
     return this.userModel.findById(id);
   }
 
-  async findOne(filter: FilterQuery<any>): Promise<User> {
+  async findOne(filter: FilterQuery<any>): Promise<UserDocument> {
     return this.userModel.findOne(filter);
   }
-  // findAll(): Promise<Array<CreatePersonResponseDto>> {
-  //   // return this.peopleRepository.find();
-  // }
+
+  async findAll(): Promise<UserDocument[]> {
+    return this.userModel.find();
+  }
 
   // async remove(id: number) {
   //   // await this.peopleRepository.delete(id);

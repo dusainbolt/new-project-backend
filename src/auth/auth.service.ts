@@ -1,14 +1,24 @@
 import { Injectable } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { HashService } from "src/hash/hash.service";
-import { User, UserHashToken } from "src/models/users/entity/user.entity";
+import { JWTData } from "src/models/users/dto/jwt-data.dto";
+import { JWT } from "src/models/users/dto/jwt.dto";
+import { UserSocial } from "src/models/users/dto/user-social.dto";
+import { VerifySocial } from "src/models/users/dto/verify-social.dto";
+import { User } from "src/models/users/entity/user.entity";
+import { Role } from "src/models/users/entity/user.enum";
+import { Constant } from "src/utils/constant";
+import { DateHelper } from "src/utils/date";
 import { Helper } from "src/utils/helper";
 import { MSG } from "src/utils/message";
 import { UserService } from "../models/users/user.service";
+
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UserService,
-    private hashService: HashService
+    private hashService: HashService,
+    private configService: ConfigService
   ) {}
 
   async validateToken(auth: string) {
@@ -17,8 +27,8 @@ export class AuthService {
     }
     const token = auth.split(" ")[1];
     try {
-      const userHashToken = this.hashService.verifyJWT(token) as UserHashToken;
-      const user: User = await this.userService.findById(userHashToken.id);
+      const JWTData = this.hashService.verifyJWT(token) as JWTData;
+      const user: User = await this.userService.findById(JWTData.id);
       if (!!!user.id) {
         throw Helper.apolloError(MSG.system.INVALID_TOKEN);
       }
@@ -26,5 +36,45 @@ export class AuthService {
     } catch (err) {
       throw Helper.apolloError(MSG.system.INVALID_TOKEN);
     }
+  }
+
+  async loginWithSocial(userSocial: UserSocial): Promise<VerifySocial> {
+    // find user
+    let user = await this.userService.findOne({
+      email: userSocial.email,
+      socialId: userSocial.socialId,
+    });
+    // create user
+    if (!user) {
+      const createUserData: User = {
+        ...userSocial,
+        username: Helper.randUserName(),
+        roles: [Role.USER],
+      };
+      user = await this.userService.create(createUserData);
+    }
+
+    // sign jwt
+    const signJWTData: JWTData = {
+      email: user.email,
+      username: user.username,
+      id: user.id,
+      roles: user.roles,
+    };
+
+    const dayExp = this.configService.get(Constant.env.EXPIRE_JWT);
+    const jwt: JWT = {
+      value: this.hashService.signJWT(signJWTData),
+      exp: DateHelper.generateExpire(Number(dayExp)).toDate(),
+      createdAt: new Date(),
+    };
+
+    user.tokens.push(jwt);
+
+    await user.save();
+
+    user.tokens = null;
+
+    return { token: jwt.value, user };
   }
 }
