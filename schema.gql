@@ -65,6 +65,7 @@ type User {
   firstName: String
   gender: Gender
   lastName: String
+  name: String
   phone: String
   roles: [Role!]
   socialId: String

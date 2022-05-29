@@ -12,6 +12,9 @@ export class UserModel {
   username: string;
 
   @Prop()
+  name: string;
+
+  @Prop()
   firstName: string;
 
   @Prop()

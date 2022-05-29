@@ -14,6 +14,9 @@ export class User {
   username?: string;
 
   @Field({ nullable: true })
+  name?: string;
+
+  @Field({ nullable: true })
   firstName?: string;
 
   @Field({ nullable: true })
